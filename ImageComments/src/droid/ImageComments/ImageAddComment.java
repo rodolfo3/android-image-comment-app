@@ -41,6 +41,7 @@ public class ImageAddComment extends Activity
         setContentView(R.layout.comment_add);
         initFields();
         installEvents();
+        load();
     }
 
     private String getFilename()
@@ -96,6 +97,17 @@ public class ImageAddComment extends Activity
 
         Toast.makeText(getApplicationContext(),
             "Saved!", 10).show();
+    }
+
+    public void load()
+    {
+        DBAdapter db = new DBAdapter(this);
+        db.open();
+        ContentValues content = db.get(getFilename());
+        if (content != null) {
+            load(content);
+        }
+        db.close();
     }
 
     public void load(ContentValues content)
