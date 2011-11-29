@@ -18,10 +18,8 @@ import android.util.Log;
 import java.lang.StringBuilder;
 
 // widgets
-import android.widget.SimpleAdapter;
-import android.widget.ListView;
-import android.widget.AdapterView;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Button;
 import android.view.View;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -31,6 +29,9 @@ import android.widget.Toast;
 import android.widget.ImageView;
 import android.net.Uri;
 
+// data wrapper
+import android.content.ContentValues;
+
 public class ImageAddComment extends Activity
 {
     @Override
@@ -39,6 +40,7 @@ public class ImageAddComment extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_add);
         initFields();
+        installEvents();
     }
 
     private String getFilename()
@@ -53,6 +55,58 @@ public class ImageAddComment extends Activity
         ImageView iv = (ImageView) findViewById(R.id.image);
         Uri uri = Uri.parse(getFilename());
         iv.setImageURI(uri);
+    }
+
+    protected ContentValues getContent()
+    {
+        ContentValues content = new ContentValues();
+        EditText aux;
+
+        content.put("filename", getFilename());
+
+        aux = (EditText) findViewById(R.id.title);
+        content.put("title", aux.getText().toString());
+
+        aux = (EditText) findViewById(R.id.comment);
+        content.put("comment", aux.getText().toString());
+
+        return content;
+    }
+
+    protected void installEvents()
+    {
+        Button btn = (Button) findViewById(R.id.btn_save);
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                save();
+            }
+        });
+
+    }
+
+    public void save()
+    {
+        // E/AndroidRuntime(12351): java.lang.NullPointerException
+        Log.d("APP:Add", "save");
+        DBAdapter db; // database wrapper
+        db = new DBAdapter(this);
+        db.open();
+        db.save(getContent());
+        db.close();
+
+        Toast.makeText(getApplicationContext(),
+            "Saved!", 10).show();
+    }
+
+    public void load(ContentValues content)
+    {
+        EditText aux;
+
+        aux = (EditText) findViewById(R.id.title);
+        aux.setText((CharSequence) content.get("title"));
+
+        aux = (EditText) findViewById(R.id.comment);
+        aux.setText((CharSequence) content.get("comment"));
     }
 
 }
