@@ -29,8 +29,7 @@ import java.util.List;
 
 import android.widget.Toast;
 import android.widget.ImageView;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
+import android.net.Uri;
 
 public class ImageAddComment extends Activity
 {
@@ -50,9 +49,10 @@ public class ImageAddComment extends Activity
 
     private void initFields()
     {
+        Log.d("APP::Add", getFilename());
         ImageView iv = (ImageView) findViewById(R.id.image);
-        Bitmap myBitmap = BitmapFactory.decodeFile(getFilename());
-        iv.setImageBitmap(myBitmap);
+        Uri uri = Uri.parse(getFilename());
+        iv.setImageURI(uri);
     }
 
 }
