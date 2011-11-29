@@ -1,0 +1,11 @@
+
+== known bugs ==
+
+1. With big images:
+
+W/dalvikvm(14787): threadid=1: thread exiting with uncaught exception (group=0x40015560)
+D/SERVICE (14777): event into file: IMG_20110718_145204.jpg
+E/AndroidRuntime(14787): FATAL EXCEPTION: main
+E/AndroidRuntime(14787): java.lang.OutOfMemoryError: bitmap size exceeds VM budget
+
+
